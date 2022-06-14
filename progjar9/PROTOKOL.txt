@@ -11,7 +11,7 @@ REQUEST YANG DILAYANI:
     - data: false
 
 CONNECT
-* TUJUAN: untuk melakukan koneksi dari client ke server
+* TUJUAN:  untuk mengambil data player yang terkoneksi ke server
 * PARAMETER: tidak ada
 * RESULT:
 - BERHASIL:
