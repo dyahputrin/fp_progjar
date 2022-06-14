@@ -1,0 +1,31 @@
+FILE SERVER
+TUJUAN: melayani client dalam request file server
+
+ATURAN PROTOKOL:
+- client harus mengirimkan request dalam bentuk string
+
+REQUEST YANG DILAYANI:
+- informasi umum:
+  * Jika request tidak dikenali akan menghasilkan pesan
+    - status: Couldn't get game
+    - data: false
+
+CONNECT
+* TUJUAN: untuk melakukan koneksi dari client ke server
+* PARAMETER: tidak ada
+* RESULT:
+- BERHASIL:
+  - data: connection
+- GAGAL:
+  - pass
+
+SEND
+* TUJUAN: untuk mengirimkan pesan dengan menyebutkan isi pesan dalam parameter
+* PARAMETER:
+  - PARAMETER1 : isi pesan
+* RESULT:
+- BERHASIL:
+  - data_pesan : isi pesan yang dikirim
+- GAGAL:
+  - data: pesan kesalahan
+
