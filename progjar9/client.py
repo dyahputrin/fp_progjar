@@ -1,6 +1,5 @@
 import pygame
 from network import Network
-import pickle
 
 from pygame import mixer
 pygame.mixer.init()
