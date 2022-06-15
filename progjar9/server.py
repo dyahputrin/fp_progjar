@@ -3,9 +3,10 @@ from _thread import *
 import pickle
 from game import Game
 
-hostname = socket.gethostname()
-server = socket.gethostbyname(hostname)
-port = 5555
+# hostname = socket.gethostname()
+# server = socket.gethostbyname(hostname)
+server = '192.168.1.9'
+port = 6666
 
 s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 

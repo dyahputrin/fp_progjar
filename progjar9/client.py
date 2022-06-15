@@ -10,34 +10,43 @@ mixer.music.play(-1)
 
 pygame.font.init()
 
-width = 1920
-height = 1080
+width = 1280
+height = 720
 win = pygame.display.set_mode((width, height))
 pygame.display.set_caption("Client")
 
+score = [0,0]
+
 
 class Button:
-    def __init__(self, text, x, y):
+    def __init__(self, text, x, y, color):
         self.text = text
-        self.x = x
-        self.y = y
-        self.width = 160
+        self.x = x - 83.0
+        self.y = y + 113.5
+        self.width = 165
         self.height = 165
-
+        self.color = color
 
     def draw(self, win):
+        # pygame.draw.rect(win, self.color, (self.x , self.y , self.width, self.height))
         font = pygame.font.Font("AznKnuckles.otf", 40)
+        text = font.render(self.text, 1, (0, 0, 0))
         if self.text == "Rock":
             btn = pygame.image.load("./img/rock.png")
-            win.blit(btn, (self.x + round(self.width/2) - round(btn.get_width()/2), self.y + round(self.height/2) - round(btn.get_height()/2)))
+            win.blit(btn, (self.x, self.y))
+            win.blit(text, (self.x + round(self.width / 2) - round(text.get_width() / 2),
+                            self.y + round(btn.get_height()) + 20))
         elif self.text == "Scissors":
             btn = pygame.image.load("./img/scissors.png")
-            win.blit(btn, (self.x + round(self.width/2) - round(btn.get_width()/2), self.y + round(self.height/2) - round(btn.get_height()/2)))
+            win.blit(btn, (self.x, self.y))
+            win.blit(text, (self.x + round(self.width / 2) - round(text.get_width() / 2),
+                            self.y + round(btn.get_height()) + 20))
+
         elif self.text == "Paper":
             btn = pygame.image.load("./img/paper.png")
-            win.blit(btn, (self.x + round(self.width/2) - round(btn.get_width()/2), self.y + round(self.height/2) - round(btn.get_height()/2)))
-        text = font.render(self.text, 1, (0,0,0))
-        win.blit(text, (self.x + round(self.width/2) - round(text.get_width()/2), self.y + round(self.height/2) + round(btn.get_height()/2) + 20))
+            win.blit(btn, (self.x, self.y))
+            win.blit(text, (self.x + round(self.width / 2) - round(text.get_width() / 2),
+                            self.y + round(btn.get_height()) + 20))
 
     def click(self, pos):
         x1 = pos[0]
@@ -81,20 +90,32 @@ def redrawWindow(win, game, p):
             else:
                 text2 = font.render("Waiting...", 1, (0, 0, 0))
 
+        player = font.render("You", 1, (0, 51,102))
+        enemy = font.render("Enemy", 1, (255,0,0))
         if p == 1:
-            win.blit(text2, (width / 2 - text.get_width() / 2, height / 2 - text.get_height() / 2))
-            win.blit(text1, (width / 2 - text.get_width() / 2 + 400, height / 2 - text.get_height() / 2))
+            win.blit(text1, (width / 2 - text.get_width() / 2, height / 2 - text.get_height() / 2))
+            win.blit(text2, (width / 2 - text.get_width() / 2 + 400, height / 2 - text.get_height() / 2))
+            win.blit(enemy, (width / 2 - enemy.get_width() / 2 - 200, height / 2 - enemy.get_height() / 2 - 50))
+            win.blit(player, (width / 2 - player.get_width() / 2 + 200, height / 2 - player.get_height() / 2 - 50))
         else:
-            win.blit(text2, (width / 2 - text.get_width() / 2, height / 2 - text.get_height() / 2))
-            win.blit(text1, (width / 2 - text.get_width() / 2 + 400, height / 2 - text.get_height() / 2))
+            win.blit(text1, (width / 2 - text.get_width() / 2, height / 2 - text.get_height() / 2))
+            win.blit(text2, (width / 2 - text.get_width() / 2 + 400, height / 2 - text.get_height() / 2))
+            win.blit(player, (width / 2 - player.get_width() / 2 - 200, height / 2 - player.get_height() / 2 - 50))
+            win.blit(enemy, (width / 2 - enemy.get_width() / 2 + 200, height / 2 - enemy.get_height() / 2 - 50))
 
         for btn in btns:
             btn.draw(win)
 
+        score0 = font.render(str(score[0]), 1, (0, 0, 0))
+        win.blit(score0, ((width / 2) - (score0.get_width() / 2) - 200, (height / 2) + (score0.get_height()) - 25))
+        score1 = font.render(str(score[1]), 1, (0, 0, 0))
+        win.blit(score1, ((width / 2) - (score1.get_width() / 2) + 200, (height / 2) + (score0.get_height()) - 25))
+
     pygame.display.update()
 
 
-btns = [Button("Rock", 680, 700), Button("Scissors", 880, 700), Button("Paper", 1080, 700)]
+btns = [Button("Rock", width / 2 - 220, height / 2 + 0, (0,0,0)), Button("Scissors", width / 2, height / 2 + 0, (255,0,0)), Button("Paper", width / 2 + 220, height / 2 + 0, (0,255,0))]
+
 def main():
     run = True
     clock = pygame.time.Clock()
@@ -124,11 +145,26 @@ def main():
             font = pygame.font.Font("AznKnuckles.otf", 90)
             if (game.winner() == 1 and player == 1) or (game.winner() == 0 and player == 0):
                 text = font.render("You Won!", 1, (255,0,0))
+                if (game.winner() == 0):
+                    score[0] += 1
+                elif (game.winner() == 1):
+                    score[1] += 1
+                win_Sound = mixer.Sound('./music/win.wav')
+                win_Sound.play()
             elif game.winner() == -1:
                 text = font.render("Tie Game!", 1, (255,0,0))
+                score[0] += 1
+                score[1] += 1
             else:
-                text = font.render("You Lost...", 1, (255,0,0))
+                if (game.winner() == 0):
+                    score[0] += 1
+                elif (game.winner() == 1):
+                    score[1] += 1
+                text = font.render("You Lose...", 1, (255,0,0))
+                lose_Sound = mixer.Sound('./music/lose.wav')
+                lose_Sound.play()
 
+            print(score)
             win.blit(text, (width/2 - text.get_width()/2, height/2 - text.get_height()/2 - 130))
             pygame.display.update()
             pygame.time.delay(2000)
